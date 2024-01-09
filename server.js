@@ -3,7 +3,7 @@ const app = express()
 const elements = require("./data.json").elements
 const _ = require('lodash')
 
-Array.prototype.paginate = function (page = 1, limit = this.length) {
+Array.prototype.paginate = function(page = 1, limit = this.length) {
 
     page = Number(page)
     limit = Number(limit)
@@ -17,7 +17,7 @@ Array.prototype.paginate = function (page = 1, limit = this.length) {
 function queryParams(params, array = elements) {
 
     if (params['filter']) {
-        _.forEach(params['filter'], function (key, value) {
+        _.forEach(params['filter'], function(key, value) {
             array = array.filter(element => element[value] == key)
         })
     }
@@ -75,6 +75,10 @@ app.get('/spectral/:element', (req, res) => {
             error: 'not found'
         })
     }
+})
+
+app.get('/block/:block', (req, res) => {
+    res.json(queryParams(req.query, elements.filter(element => element.block == req.params.block)))
 })
 
 app.listen(3000, async () => {
